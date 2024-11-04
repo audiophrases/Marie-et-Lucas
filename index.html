@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Combined Text and Audio</title>
+    <title>Dialogue 1: Marie et Lucas</title>
     <style>
       /* Existing styles */
       .title {
@@ -63,9 +63,17 @@
       .progress {
         width: 100%;
         margin: 10px 0;
+        display: flex;
+        align-items: center;
       }
       .progress input[type="range"] {
-        width: 100%;
+        flex-grow: 1;
+      }
+      .time {
+        font-size: 14px;
+        margin-left: 10px;
+        width: 70px;
+        text-align: right;
       }
     </style>
   </head>
@@ -95,6 +103,7 @@
         </div>
         <div class="progress">
           <input type="range" id="progressBar1" value="0" step="0.1" min="0" max="100" onchange="seek('audio1', this.value)">
+          <div class="time" id="time1">0:00 / 0:00</div>
         </div>
       </div>
     </div>
@@ -117,6 +126,7 @@
         </div>
         <div class="progress">
           <input type="range" id="progressBar2" value="0" step="0.1" min="0" max="100" onchange="seek('audio2', this.value)">
+          <div class="time" id="time2">0:00 / 0:00</div>
         </div>
       </div>
     </div>
@@ -125,76 +135,76 @@
   
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Salut ! Je m'appelle Marie. Et toi, comment tu t'appelles ?</div>
     <div class="l1">Hola! Em dic Marie. I tu, com et dius?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Bonjour Marie ! Je m'appelle Lucas.</div>
     <div class="l1">Bon dia Marie! Em dic Lucas.</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Enchantée, Lucas. Tu as quel âge ?</div>
     <div class="l1">Encantada, Lucas. Quants anys tens?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">J'ai 13 ans. Et toi ?</div>
     <div class="l1">Tinc 13 anys. I tu?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Moi aussi ! Tu es de quelle nationalité ?</div>
     <div class="l1">Jo també! De quina nacionalitat ets?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Je suis espagnol, je viens de Barcelone. Et toi ?</div>
     <div class="l1">Sóc espanyol, vinc de Barcelona. I tu?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Je suis française, de Lyon.</div>
     <div class="l1">Sóc francesa, de Lió.</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Quels sont tes loisirs ?</div>
     <div class="l1">Quines són les teves aficions?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">J'adore le football et la musique.</div>
     <div class="l1">M'encanta el futbol i la música.</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Super ! Moi, j'aime la danse et le cinéma.</div>
     <div class="l1">Genial! A mi m'agrada la dansa i el cinema.</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">On pourrait aller voir un film ensemble un jour ?</div>
     <div class="l1">Podríem anar a veure una pel·lícula junts algun dia?</div>
-  
+    
     <div class="l2"></div>
     <div class="l1"></div>
-  
+    
     <div class="l2">Oui, avec plaisir !</div>
     <div class="l1">Sí, amb molt de gust!</div>
-  
+    
     <script>
       // Function to toggle play/pause
       function playPause(audioId) {
@@ -227,13 +237,25 @@
         audio.playbackRate = parseFloat(speed);
       }
 
-      // Function to update progress bar
-      function updateProgress(audioId, progressBarId) {
+      // Function to update progress bar and time
+      function updateProgress(audioId, progressBarId, timeId) {
         var audio = document.getElementById(audioId);
         var progressBar = document.getElementById(progressBarId);
+        var timeDisplay = document.getElementById(timeId);
         if (audio.duration) {
           progressBar.value = (audio.currentTime / audio.duration) * 100;
+          timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
         }
+      }
+
+      // Function to format time in mm:ss
+      function formatTime(seconds) {
+        var minutes = Math.floor(seconds / 60);
+        var seconds = Math.floor(seconds % 60);
+        if (seconds < 10) {
+          seconds = '0' + seconds;
+        }
+        return minutes + ':' + seconds;
       }
 
       // Function to seek in the audio
@@ -242,20 +264,27 @@
         audio.currentTime = (value / 100) * audio.duration;
       }
 
-      // Event listeners for updating progress bars
+      // Event listeners for updating progress bars and time
       var audio1 = document.getElementById('audio1');
       audio1.addEventListener('timeupdate', function() {
-        updateProgress('audio1', 'progressBar1');
+        updateProgress('audio1', 'progressBar1', 'time1');
       });
       audio1.addEventListener('ended', function() {
         document.getElementById('playPauseBtn1').textContent = 'Play';
       });
+      audio1.addEventListener('loadedmetadata', function() {
+        updateProgress('audio1', 'progressBar1', 'time1');
+      });
+
       var audio2 = document.getElementById('audio2');
       audio2.addEventListener('timeupdate', function() {
-        updateProgress('audio2', 'progressBar2');
+        updateProgress('audio2', 'progressBar2', 'time2');
       });
       audio2.addEventListener('ended', function() {
         document.getElementById('playPauseBtn2').textContent = 'Play';
+      });
+      audio2.addEventListener('loadedmetadata', function() {
+        updateProgress('audio2', 'progressBar2', 'time2');
       });
     </script>
   </body>
