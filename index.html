@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Combined Text and Audio</title>
     <style>
+      /* Existing styles */
       .title {
         text-align: center;
         margin-bottom: 20px;
@@ -14,8 +15,8 @@
         font-weight: bold;
       }
       .title-l1 {
-        font-size: 18px; /* Smaller than title-l2 */
-        color: gray;     /* Grey color like the rest of the l1 lines */
+        font-size: 18px;
+        color: gray;
       }
       .l2 {
         font-size: 24px;
@@ -23,17 +24,48 @@
         margin-top: 15px;
       }
       .l1 {
-        font-size: 18px; /* Slightly bigger than before */
+        font-size: 18px;
         color: gray;
         margin-bottom: 15px;
-      }
-      .audio-section {
-        margin-bottom: 30px;
-        text-align: center;
       }
       body {
         font-family: Arial, sans-serif;
         padding: 20px;
+      }
+      /* New styles for custom audio controls */
+      .audio-section {
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .audio-player {
+        display: inline-block;
+        width: 100%;
+        max-width: 600px; /* Adjust as needed */
+      }
+      .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .controls button,
+      .controls select {
+        background-color: #f0f0f0;
+        border: none;
+        margin: 0 5px;
+        padding: 10px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .controls button:hover,
+      .controls select:hover {
+        background-color: #e0e0e0;
+      }
+      .progress {
+        width: 100%;
+        margin: 10px 0;
+      }
+      .progress input[type="range"] {
+        width: 100%;
       }
     </style>
   </head>
@@ -44,93 +76,188 @@
       <div class="title-l1">Diàleg 1: Marie i Lucas</div>
     </div>
 
-    <!-- Audio Controls -->
+    <!-- Audio Players with Custom Controls -->
     <div class="audio-section">
-      <audio controls>
-        <source src="L2.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
+      <div class="audio-player">
+        <audio id="audio1" src="L2.mp3"></audio>
+        <div class="controls">
+          <button onclick="rewind('audio1')">« 5s</button>
+          <button onclick="playPause('audio1')" id="playPauseBtn1">Play</button>
+          <button onclick="skip('audio1')">5s »</button>
+          <select onchange="changeSpeed('audio1', this.value)">
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="0.85">0.85x</option>
+            <option value="0.90">0.90x</option>
+            <option value="0.95">0.95x</option>
+            <option value="1" selected>1x</option>
+          </select>
+        </div>
+        <div class="progress">
+          <input type="range" id="progressBar1" value="0" step="0.1" min="0" max="100" onchange="seek('audio1', this.value)">
+        </div>
+      </div>
     </div>
+
     <div class="audio-section">
-      <audio controls>
-        <source src="L2L1.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
+      <div class="audio-player">
+        <audio id="audio2" src="L2L1.mp3"></audio>
+        <div class="controls">
+          <button onclick="rewind('audio2')">« 5s</button>
+          <button onclick="playPause('audio2')" id="playPauseBtn2">Play</button>
+          <button onclick="skip('audio2')">5s »</button>
+          <select onchange="changeSpeed('audio2', this.value)">
+            <option value="0.5">0.5x</option>
+            <option value="0.75">0.75x</option>
+            <option value="0.85">0.85x</option>
+            <option value="0.90">0.90x</option>
+            <option value="0.95">0.95x</option>
+            <option value="1" selected>1x</option>
+          </select>
+        </div>
+        <div class="progress">
+          <input type="range" id="progressBar2" value="0" step="0.1" min="0" max="100" onchange="seek('audio2', this.value)">
+        </div>
+      </div>
     </div>
 
     <!-- Display Combined Data -->
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Salut ! Je m'appelle Marie. Et toi, comment tu t'appelles ?</div>
     <div class="l1">Hola! Em dic Marie. I tu, com et dius?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Bonjour Marie ! Je m'appelle Lucas.</div>
     <div class="l1">Bon dia Marie! Em dic Lucas.</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Enchantée, Lucas. Tu as quel âge ?</div>
     <div class="l1">Encantada, Lucas. Quants anys tens?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">J'ai 13 ans. Et toi ?</div>
     <div class="l1">Tinc 13 anys. I tu?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Moi aussi ! Tu es de quelle nationalité ?</div>
     <div class="l1">Jo també! De quina nacionalitat ets?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Je suis espagnol, je viens de Barcelone. Et toi ?</div>
     <div class="l1">Sóc espanyol, vinc de Barcelona. I tu?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Je suis française, de Lyon.</div>
     <div class="l1">Sóc francesa, de Lió.</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Quels sont tes loisirs ?</div>
     <div class="l1">Quines són les teves aficions?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">J'adore le football et la musique.</div>
     <div class="l1">M'encanta el futbol i la música.</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Super ! Moi, j'aime la danse et le cinéma.</div>
     <div class="l1">Genial! A mi m'agrada la dansa i el cinema.</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">On pourrait aller voir un film ensemble un jour ?</div>
     <div class="l1">Podríem anar a veure una pel·lícula junts algun dia?</div>
-
+  
     <div class="l2"></div>
     <div class="l1"></div>
-
+  
     <div class="l2">Oui, avec plaisir !</div>
     <div class="l1">Sí, amb molt de gust!</div>
+  
+    <script>
+      // Function to toggle play/pause
+      function playPause(audioId) {
+        var audio = document.getElementById(audioId);
+        var playPauseBtn = document.getElementById('playPauseBtn' + audioId.slice(-1));
+        if (audio.paused) {
+          audio.play();
+          playPauseBtn.textContent = 'Pause';
+        } else {
+          audio.pause();
+          playPauseBtn.textContent = 'Play';
+        }
+      }
 
+      // Function to rewind 5 seconds
+      function rewind(audioId) {
+        var audio = document.getElementById(audioId);
+        audio.currentTime = Math.max(0, audio.currentTime - 5);
+      }
+
+      // Function to skip forward 5 seconds
+      function skip(audioId) {
+        var audio = document.getElementById(audioId);
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + 5);
+      }
+
+      // Function to change playback speed
+      function changeSpeed(audioId, speed) {
+        var audio = document.getElementById(audioId);
+        audio.playbackRate = parseFloat(speed);
+      }
+
+      // Function to update progress bar
+      function updateProgress(audioId, progressBarId) {
+        var audio = document.getElementById(audioId);
+        var progressBar = document.getElementById(progressBarId);
+        if (audio.duration) {
+          progressBar.value = (audio.currentTime / audio.duration) * 100;
+        }
+      }
+
+      // Function to seek in the audio
+      function seek(audioId, value) {
+        var audio = document.getElementById(audioId);
+        audio.currentTime = (value / 100) * audio.duration;
+      }
+
+      // Event listeners for updating progress bars
+      var audio1 = document.getElementById('audio1');
+      audio1.addEventListener('timeupdate', function() {
+        updateProgress('audio1', 'progressBar1');
+      });
+      audio1.addEventListener('ended', function() {
+        document.getElementById('playPauseBtn1').textContent = 'Play';
+      });
+      var audio2 = document.getElementById('audio2');
+      audio2.addEventListener('timeupdate', function() {
+        updateProgress('audio2', 'progressBar2');
+      });
+      audio2.addEventListener('ended', function() {
+        document.getElementById('playPauseBtn2').textContent = 'Play';
+      });
+    </script>
   </body>
 </html>
+  
